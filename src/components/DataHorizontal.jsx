@@ -3,21 +3,22 @@ import { Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
 
-function DataHorizontal({totalData, loading }) {
+function DataHorizontal({totalData, loading, setTotalData }) {
     
     const [showModal, setShowModal] = useState(false);
-    const [dataPageWise, setDataPageWise] = useState(totalData);
 
     const handleClick = () => {
         setShowModal(true);
     }
-
+    
     const handleDelete = (id, e) => {
-        axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+        const proxyURL = "https://news-react-app-kalpas.netlify.app/";
+        const url = `https://jsonplaceholder.typicode.com/posts/${id}`;
+        axios.delete(proxyURL+url)
         .then(response => {
             console.log("Deleted Successfully"+response);
-            const deleteData = dataPageWise.filter(data => data.id !== id);
-            setDataPageWise(deleteData);
+            const deleteData = totalData.filter(data => data.id !== id);
+            setTotalData(deleteData);
         })
         .catch(error => {
         console.error('There was an error!', error);
@@ -28,8 +29,8 @@ function DataHorizontal({totalData, loading }) {
         <div>
             <Row className="justify-content-center">
             {
-            ((dataPageWise.length>0) && !loading) ? 
-                dataPageWise.map((dataOne) => (
+            ((totalData.length>0) && !loading) ? 
+                totalData.map((dataOne) => (
                     <Col md={4} key={dataOne.id}>
                         <div>
                             <Card className="border-2 rounded-3 py-4 my-3 shadow px-3">

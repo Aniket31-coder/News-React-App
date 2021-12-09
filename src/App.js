@@ -40,7 +40,7 @@ function App() {
   const firstIndex = lastIndex - dataPerPage;
   const dataPage = data.slice(firstIndex,lastIndex);
   console.log(dataPage);
-  
+  const [dataPageWise, setDataPageWise] = useState(dataPage);
   // const handleChange = (e) => {
   //   setHorizontalOrVertical(e.target.value);
   //   console.log(horizontalOrVertical);
@@ -122,9 +122,9 @@ function App() {
          {console.log(horizontalOrVertical)}
           <Row className="justify-content-center">
             {!horizontalOrVertical ? 
-              <DataVertical totalData={dataPage} loading={loading} />
+              <DataVertical totalData={dataPageWise} setTotalData={setDataPageWise} loading={loading} />
             :
-            <DataHorizontal totalData={dataPage} loading={loading} />
+            <DataHorizontal totalData={dataPage} setTotalData={setDataPageWise} loading={loading} />
             }
             
             <Pagination className="justify-content-center">
