@@ -11,8 +11,6 @@ function App() {
 
   const [data, setData] = useState([]); 
   const [loading, setLoading] = useState(false);
-  // const [deleteData, setDeleteData] = useState();
-  const [dataPage, setDataPage] = useState([]); 
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const dataPerPage = 6;
   const limitOfPages = [1,2,3];
@@ -31,18 +29,18 @@ function App() {
           console.log(JSON.stringify(error))
         })
         setLoading(false);
-        
-        const lastIndex = currentPageNumber*dataPerPage;
-        const firstIndex = lastIndex - dataPerPage;
-        setDataPage(data.slice(firstIndex,lastIndex));
-        console.log(dataPage);
     }
     
   
   
     getData()
-  },[currentPageNumber]);
-
+  },[]);
+  
+  const lastIndex = currentPageNumber*dataPerPage;
+  const firstIndex = lastIndex - dataPerPage;
+  const dataPage = data.slice(firstIndex,lastIndex);
+  console.log(dataPage);
+  
   // const handleChange = (e) => {
   //   setHorizontalOrVertical(e.target.value);
   //   console.log(horizontalOrVertical);
@@ -124,9 +122,9 @@ function App() {
          {console.log(horizontalOrVertical)}
           <Row className="justify-content-center">
             {!horizontalOrVertical ? 
-              <DataVertical totalData={dataPage} setTotalData={setDataPage} loading={loading} />
+              <DataVertical totalData={dataPage} loading={loading} />
             :
-            <DataHorizontal totalData={dataPage} setTotalData={setDataPage} loading={loading} />
+            <DataHorizontal totalData={dataPage} loading={loading} />
             }
             
             <Pagination className="justify-content-center">

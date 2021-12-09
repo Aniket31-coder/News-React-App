@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
-function DataVertical({totalData, loading, setTotalData }) {
+function DataVertical({totalData, loading }) {
 
     const [showModal, setShowModal] = useState(false);
+    const [dataPageWise, setDataPageWise] = useState(totalData);
 
     const handleClick = () => {
         setShowModal(true);
@@ -13,9 +14,9 @@ function DataVertical({totalData, loading, setTotalData }) {
     const handleDelete = (id, e) => {
         axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
         .then(response => {
-            console.log("Deleted successfully")
-            totalData = totalData.filter(data => data.id !== id);
-            setTotalData(totalData);
+            console.log("Deleted Successfully"+response);
+            const deleteData = dataPageWise.filter(data => data.id !== id);
+            setDataPageWise(deleteData);
         })
         .catch(error => {
         console.error('There was an error!', error);
@@ -24,8 +25,8 @@ function DataVertical({totalData, loading, setTotalData }) {
     
     return (
         <div>
-            {((totalData.length>0) && !loading) ? 
-                totalData.map((dataOne) => (
+            {((dataPageWise.length>0) && !loading) ? 
+                dataPageWise.map((dataOne) => (
                   <Row key={dataOne.id} className="justify-content-center">
                     <Col md={10}>
                         <Card className="border-2 rounded-3 py-3 my-3 shadow" style={{cursor: "pointer"}} data-toggle="modal" data-target={`#${dataOne.id}`} onClick={handleClick}>

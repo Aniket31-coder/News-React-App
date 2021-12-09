@@ -3,9 +3,10 @@ import { Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
 
 
-function DataHorizontal({totalData, loading, setTotalData }) {
+function DataHorizontal({totalData, loading }) {
     
     const [showModal, setShowModal] = useState(false);
+    const [dataPageWise, setDataPageWise] = useState(totalData);
 
     const handleClick = () => {
         setShowModal(true);
@@ -14,9 +15,9 @@ function DataHorizontal({totalData, loading, setTotalData }) {
     const handleDelete = (id, e) => {
         axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
         .then(response => {
-            console.log("Deleted successfully")
-            totalData = totalData.filter(data => data.id !== id);
-            setTotalData(totalData);
+            console.log("Deleted Successfully"+response);
+            const deleteData = dataPageWise.filter(data => data.id !== id);
+            setDataPageWise(deleteData);
         })
         .catch(error => {
         console.error('There was an error!', error);
@@ -27,8 +28,8 @@ function DataHorizontal({totalData, loading, setTotalData }) {
         <div>
             <Row className="justify-content-center">
             {
-            ((totalData.length>0) && !loading) ? 
-                totalData.map((dataOne) => (  
+            ((dataPageWise.length>0) && !loading) ? 
+                dataPageWise.map((dataOne) => (
                     <Col md={4} key={dataOne.id}>
                         <div>
                             <Card className="border-2 rounded-3 py-4 my-3 shadow px-3">
@@ -38,8 +39,7 @@ function DataHorizontal({totalData, loading, setTotalData }) {
                                 <div className="mx-auto bg-secondary" style={{width: "100%", height: "120px"}}>
                                 </div>
                             </Card>
-                        </div>
-                        
+                        </div>    
                     </Col>
                     // <Col md={1} className="py-3 my-auto">
                     //     <div style={{maxWidth:"fit-content"}}>
